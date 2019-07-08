@@ -1,41 +1,37 @@
+from __future__ import print_function
 from flask import render_template, Blueprint, request, redirect
 import flask_restful as restful
 from app.forms import *
 
-import helper as hl
+import sys
+
+from ..easy_search import helper as hl
 
 blueprint = Blueprint('pages', __name__)
 api = restful.Api(blueprint)
+
 
 ################
 #### routes ####
 ################
 
 
-
-
-class GetYoutubeLinkDetails(restful.Resource):
+class Search_top_k(restful.Resource):
     def get(self):
         return redirect('/')
 
-    # @login_required
     def post(self):
         try:
-            youtube_link = request.form
-            resp = hl.find_resolutions_of_a_video(youtube_link)
-
+            query_data = request.get_json()
+            resp = hl.search_top_k_results(query_data)
             return resp
         except Exception as e:
             return e
-
-api.add_resource(GetYoutubeLinkDetails, '/get_youtube_video_details')
 
 
 @blueprint.route('/')
 def home():
     return render_template('pages/placeholder.home.html')
-
-
 
 
 @blueprint.route('/about')
@@ -59,3 +55,6 @@ def register():
 def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
+
+
+api.add_resource(Search_top_k, '/search_top_results')
