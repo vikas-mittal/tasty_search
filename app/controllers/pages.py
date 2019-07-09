@@ -29,6 +29,12 @@ class Search_top_k(restful.Resource):
             return e
 
 
+class Restructure_data_and_insert_in_redis(restful.Resource):
+    def get(self):
+        hl.restructure_data_and_insert_in_redis()
+        return "Data is resturctured and stored in redis"
+
+
 @blueprint.route('/')
 def home():
     return render_template('pages/placeholder.home.html')
@@ -58,3 +64,4 @@ def forgot():
 
 
 api.add_resource(Search_top_k, '/search_top_results')
+api.add_resource(Restructure_data_and_insert_in_redis, '/restructure_data')
