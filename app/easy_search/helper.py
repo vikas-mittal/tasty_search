@@ -27,3 +27,12 @@ def restructure_data_and_insert_in_redis():
     summary_each_word_occ_dict = get_json_of_each_word_occurrence_for_each_product(df, const.summary_text_col_name)
     insert_json_data_to_redis(review_each_word_occ_dict, "review_text_json")
     insert_json_data_to_redis(summary_each_word_occ_dict, "summary_text_json")
+
+
+def insert_df_to_redis(df):
+    """
+    Insert Data frame in redis with object name 'df' for future use of data frame.
+    :param df: data frame
+    :return:
+    """
+    r.set("df", df.to_msgpack(compress='zlib'))
