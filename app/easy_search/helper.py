@@ -101,3 +101,22 @@ def convert_data_in_df():
                 list_of_lists = []
 
     return df
+
+
+def get_json_of_each_word_occurrence_for_each_product(df, col):
+    """
+    For every word a json is created to find how many time that word is occurred in different products. A dictionary
+    for the same is created.
+    :param df: data frame
+    :param col: column of which dictionary has to be made
+    :return: dictionary each word occurrence in the different products.
+    """
+    text_list = df[col].tolist()
+    each_word_occ_dict = {}
+    for i in range(0, len(text_list)):
+        list_on = text_list[i].split()
+        for j in list_on:
+            each_word_occ_dict.setdefault(j, []).append(i)
+            each_word_occ_dict[j] = list(set(each_word_occ_dict[j]))
+
+    return each_word_occ_dict
