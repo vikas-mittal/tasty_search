@@ -120,3 +120,23 @@ def get_json_of_each_word_occurrence_for_each_product(df, col):
             each_word_occ_dict[j] = list(set(each_word_occ_dict[j]))
 
     return each_word_occ_dict
+
+
+def get_search_string_rank_for_each_word(search_string, each_word_json):
+    """
+    For each word in the search string, it's occurrence in different products is calculated and accordingly product
+    rank according to search string is stored.
+    :param search_string: User Search string
+    :param each_word_json: Dictionary of every word in which product it has occurred.
+    :return: Dictionary which has every work rank of every product according to search string.
+    """
+    each_word_json = json.loads(each_word_json)
+    document_rank_list = {}
+    search_string_list = list(set(search_string.split()))
+    for st in search_string_list:
+        if st in each_word_json:
+            for pro_id in each_word_json[st]:
+                document_rank_list.setdefault(pro_id, 0)
+                document_rank_list[pro_id] = document_rank_list[pro_id] + 1
+
+    return document_rank_list
