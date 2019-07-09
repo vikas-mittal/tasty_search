@@ -46,3 +46,20 @@ def convert_df_colm_to_list(df, col):
     :return: list of column of data frame
     """
     return df[col].tolist()
+
+
+def search_top_k_results(query_data_json):
+    """
+    It search the top k(20) results of reviews and summary together from the data stored in redis. For individual
+    word in the query rank is calculated and top results are returned.
+    :param query_data_json: Contains search query data in json format like {'data':'this is good product'}
+    :return: top k(20) reviews that matches the search query in json format
+    """
+    query_data = dump_to_json(query_data_json)
+    query_data_string = query_data["data"]
+    each_word_json_review = get_json_formatted_data_from_redis("review_text_json")
+    each_word_json_summary = get_json_formatted_data_from_redis("summary_text_json")
+    rank_wise_reviews_review = get_search_string_rank_for_each_word(query_data_string, each_word_json_review)
+    rank_wise_reviews_summary = get_search_string_rank_for_each_word(query_data_string, each_word_json_summary)
+    merged_dict = merge_review_text_and_summary(rank_wise_reviews_review, rank_wise_reviews_summary)
+    return top_k_matches(merged_dict)
