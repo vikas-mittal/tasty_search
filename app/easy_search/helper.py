@@ -36,3 +36,13 @@ def insert_df_to_redis(df):
     :return:
     """
     r.set("df", df.to_msgpack(compress='zlib'))
+
+
+def convert_df_colm_to_list(df, col):
+    """
+    Convert given data frame column to list.
+    :param df: data frame
+    :param col: column of data frmae
+    :return: list of column of data frame
+    """
+    return df[col].tolist()
