@@ -140,3 +140,15 @@ def get_search_string_rank_for_each_word(search_string, each_word_json):
                 document_rank_list[pro_id] = document_rank_list[pro_id] + 1
 
     return document_rank_list
+
+
+def merge_review_text_and_summary(review_text_json, summary_text_json):
+    """
+    Merged two dictionaries(review text dict and summary text dict) which contain rank of each product according to
+    search query.
+    :param review_text_json: Dictionary of review
+    :param summary_text_json: Dictionary of summary
+    :return: Merged dictionary of both
+    """
+    merged_dict = dict(Counter(review_text_json) + Counter(summary_text_json))
+    return merged_dict
