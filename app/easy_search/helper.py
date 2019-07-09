@@ -23,6 +23,7 @@ def restructure_data_and_insert_in_redis():
     data frame in review text and summary text. At the end insert those into redis for future use.
     """
     df = convert_data_in_df()
+    insert_df_to_redis(df)
     review_each_word_occ_dict = get_json_of_each_word_occurrence_for_each_product(df, const.review_text_col_name)
     summary_each_word_occ_dict = get_json_of_each_word_occurrence_for_each_product(df, const.summary_text_col_name)
     insert_json_data_to_redis(review_each_word_occ_dict, "review_text_json")
@@ -80,7 +81,7 @@ def insert_json_data_to_redis(json_data, obj_name):
     :param json_data: data to be inserted in redis
     :param obj_name: object name with which data need to be inserted
     """
-    r.set(obj_name, json.dumps(json_data))
+    r.set(obj_name, json.dumps(json_data, encoding='latin1'))
 
 
 def convert_data_in_df():
@@ -99,7 +100,6 @@ def convert_data_in_df():
             else:
                 df = df.append(pd.DataFrame([list_of_lists], columns=col_names), ignore_index=True)
                 list_of_lists = []
-
     return df
 
 
