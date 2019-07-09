@@ -63,3 +63,12 @@ def search_top_k_results(query_data_json):
     rank_wise_reviews_summary = get_search_string_rank_for_each_word(query_data_string, each_word_json_summary)
     merged_dict = merge_review_text_and_summary(rank_wise_reviews_review, rank_wise_reviews_summary)
     return top_k_matches(merged_dict)
+
+
+def get_json_formatted_data_from_redis(obj_name):
+    """
+    Get data from redis based on object name
+    :param obj_name: object nae which is stored in redis
+    :return: data stored in redis with given obj name
+    """
+    return r.get(obj_name)
