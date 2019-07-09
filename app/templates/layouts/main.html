@@ -139,39 +139,20 @@
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>
 
-
             <br />
-
-
-            <iframe id="existing-iframe-example" width="0" height="0" src='about:blank' allowfullscreen></iframe>
-
 
             <script type="text/javascript">
 
-                function display_link(youtube_link) {
+                function display_link(query_string) {
+                    console.log(query_string);
+                    var json_data = { "data": query_string }
 
-
-                    var scr_val = youtube_link.replace("watch?v=", "embed/");
-
-                    scr_val = scr_val.replace("&list", "videoseries?list");
-
-                    console.log(scr_val);
-
-
-                    if (scr_val != "about:blank") {
-                        document.getElementById("existing-iframe-example").width = "650";
-                        document.getElementById("existing-iframe-example").height = "300";
-                        document.getElementById("existing-iframe-example").src = scr_val;
-
-                        const front_data = { youtube_video_link: youtube_link };
-                        <!--const request_url = "127.0.0.1:5000/get_youtube_video_details;"-->
-                        console.log("api data is showing");
-                        console.log(front_data);
-
-
+                    if (json_data["data"] != "about:blank") {
+                        console.log(json_data)
                         $.ajax({
-                            url: '127.0.0.1:5000/get_youtube_video_details',
-                            data: front_data,
+                            url: 'search_top_results',
+                            contentType: 'application/json',
+                            data: JSON.stringify(json_data),
                             type: 'POST',
                             success: function (response) {
                                 console.log("data is printing");
