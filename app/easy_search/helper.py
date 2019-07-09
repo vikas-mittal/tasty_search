@@ -152,3 +152,19 @@ def merge_review_text_and_summary(review_text_json, summary_text_json):
     """
     merged_dict = dict(Counter(review_text_json) + Counter(summary_text_json))
     return merged_dict
+
+
+def top_k_matches(merged_dict):
+    """
+    Finding products which matches the best according to the search string by retrieving data frame from redis and
+    sorting dictionary based on max rank of product review and summary.
+    :param merged_dict: Dictionary containing review and summary rank of each product
+    :return: Dictionary of top k(20) matches product according to the search query.
+    """
+    data_list = {}
+    df = pd.read_msgpack(r.get("df"))
+    largest_data = heapq.nlargest(20, merged_dict, key=merged_dict.get)
+    for index, value in enumerate(largest_data):
+        data_list[index] = (df.iloc[int(value)]).tolist()
+
+    return data_list
