@@ -72,3 +72,12 @@ def get_json_formatted_data_from_redis(obj_name):
     :return: data stored in redis with given obj name
     """
     return r.get(obj_name)
+
+
+def insert_json_data_to_redis(json_data, obj_name):
+    """
+    Insert data into redis with given object name
+    :param json_data: data to be inserted in redis
+    :param obj_name: object name with which data need to be inserted
+    """
+    r.set(obj_name, json.dumps(json_data))
