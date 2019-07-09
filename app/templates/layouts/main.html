@@ -57,6 +57,11 @@
                     <ul class="nav navbar-nav">
                         <li><a href="/">Home</a></li>
                         <li><a href="/about">About</a></li>
+                        <li><a>
+                                <button style="border:none; outline: none; background-color: transparent;"
+                                    onclick="call_structure_data_api()">Restructure Data
+                                </button>
+                            </a></li>
                     </ul>
                     <ul class="nav navbar-nav pull-right">
                         <li class="dropdown">
@@ -182,7 +187,21 @@
 
             </div>
 
+
             <script type="text/javascript">
+
+                function call_structure_data_api() {
+                    console.log("working")
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/restructure_data",
+                        success: function (data) {
+                            alert(data);
+                        }
+                    });
+
+                }
 
                 function display_link(query_string) {
                     console.log(query_string);
@@ -228,6 +247,8 @@
                     }
                 }
 
+
+
             </script>
         </main>
     </div>
@@ -251,6 +272,8 @@
         Modernizr.load({
             load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
         });
+
+
 
 
     </script>
