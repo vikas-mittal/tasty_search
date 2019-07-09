@@ -81,3 +81,23 @@ def insert_json_data_to_redis(json_data, obj_name):
     :param obj_name: object name with which data need to be inserted
     """
     r.set(obj_name, json.dumps(json_data))
+
+
+def convert_data_in_df():
+    """
+    Convert data in the file into data frame.
+    :return: data frame of the data in the file.
+    """
+    col_names = const.col_names
+    df = pd.DataFrame(columns=col_names)
+    list_of_lists = []
+    with open(const.data_file_path) as f:
+        for line in f:
+            inner_list = [line.strip() for line in line.split(':')]
+            if len(inner_list) > 1:
+                list_of_lists.append(str(inner_list[1]))
+            else:
+                df = df.append(pd.DataFrame([list_of_lists], columns=col_names), ignore_index=True)
+                list_of_lists = []
+
+    return df
